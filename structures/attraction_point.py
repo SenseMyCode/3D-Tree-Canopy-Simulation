@@ -14,12 +14,25 @@ class AttractionPoint:
 def generate_attraction_points(
     n: int = 300,
     center: tuple = (0, 0, 5),
-    spread: float = 5.0
+    radii: tuple = (5.0, 4.0, 3.0)
 ):
     points = []
-    for _ in range(n):
-        x = np.random.normal(center[0], spread)
-        y = np.random.normal(center[1], spread)
-        z = np.random.uniform(2, 10)
-        points.append(AttractionPoint(x, y, z))
+
+    while len(points) < n:
+        x = np.random.uniform(-radii[0], radii[0])
+        y = np.random.uniform(-radii[1], radii[1]) 
+        z = np.random.uniform(-radii[2], radii[2])
+
+        if (
+            (x/radii[0])**2 +
+            (y/radii[1])**2 +
+            (z/radii[2])**2
+        ) <= 1.0:
+            points.append(
+                AttractionPoint(
+                    x + center[0],
+                    y + center[1],
+                    z + center[2]
+                )
+            )
     return points
