@@ -1,0 +1,10 @@
+3D-Tree-Canopy_Simulation
+|Structures
+||__init__.py
+||attraction_point.py
+||node.py
+||tree.py
+|venv
+|visualization
+||plot_3d.py
+|main.py
