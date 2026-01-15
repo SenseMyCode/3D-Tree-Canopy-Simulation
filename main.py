@@ -1,14 +1,14 @@
 from structures.tree import Tree
 from structures.attraction_point import generate_attraction_points
-from visualization.plot_3d import plot_scene
-import matplotlib.pyplot as plt
+from visualization.vispy_scene import TreeScene
+from vispy import app
 
 
 def main():
     attraction_points = generate_attraction_points(
         n=500,
         center=(0, 0, 6),
-        radii=(5.0,4.0,3.0)
+        radii=(5.0, 4.0, 3.0)
     )
 
     tree = Tree(
@@ -19,11 +19,8 @@ def main():
         step_size=0.5
     )
 
-    for _ in range(150):
-        tree.grow()
-        plot_scene(tree)
-
-    plt.show()
+    TreeScene(tree)
+    app.run()
 
 
 if __name__ == "__main__":
