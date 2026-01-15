@@ -10,7 +10,7 @@ class TreeScene(scene.SceneCanvas):
 
         # --- widok 3D FPS-style ---
         self.view = self.central_widget.add_view()
-        self.camera = scene.cameras.FlyCamera(center=(0,0,0), fov=60)
+        self.camera = scene.cameras.FlyCamera(center=(0,0,0), fov=60, scale_factor=3.0)
         self.view.camera = self.camera
         self.camera.speed_factor = 0.5  # prędkość ruchu
 
@@ -18,6 +18,10 @@ class TreeScene(scene.SceneCanvas):
         self.attraction_visual = visuals.Markers(parent=self.view.scene)
         self.node_visual = visuals.Markers(parent=self.view.scene)
         self.edge_visual = visuals.Line(parent=self.view.scene)
+
+        # --- spawn camera ---
+        self.camera.center = (-10, -10, 3)
+
 
         # --- timer do wzrostu drzewa ---
         self.timer = app.Timer(interval=0.016, connect=self._timer_event, start=True)
