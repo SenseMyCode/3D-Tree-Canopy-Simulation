@@ -20,6 +20,7 @@ class Tree:
         self.kill_radius = kill_radius
         self.step_size = step_size
 
+        self.trunk_height = 4.0
         self.trunk_done = False
 
         root = Node(*root_position, parent=None)
@@ -34,7 +35,6 @@ class Tree:
         self.edges.append((parent_index, len(self.nodes) - 1))
 
     # ---------------- TRUNK ----------------
-
     def grow_trunk(self):
         direction = np.array([0.0, 0.0, 1.0])
         last_idx = len(self.nodes) - 1
@@ -43,30 +43,26 @@ class Tree:
         new_pos = last_node.position() + direction * self.step_size
         self.add_node(tuple(new_pos), last_idx)
 
-        for ap in self.attraction_points:
-            if np.linalg.norm(ap.position() - new_pos) < self.influence_radius:
-                self.trunk_done = True
-                break
+        # Sprawdzenie czy pień osiągnął docelową wysokość
+        if new_pos[2] >= self.nodes[0].z + self.trunk_height:
+            self.trunk_done = True
+
 
     # ---------------- MAIN GROW ----------------
-
     def grow(self):
         if self.consumed_attraction_points >= self.max_attraction_points:
             return
-
         if not self.attraction_points:
             return
-
         if not self.trunk_done:
             self.grow_trunk()
             return
 
         node_positions = np.array([n.position() for n in self.nodes])
         kd_tree = KDTree(node_positions)
-
         growth_vectors = {i: [] for i in range(len(self.nodes))}
 
-        # 1. attraction point -> nearest node
+        # 1. Attraction point -> nearest node
         for ap in self.attraction_points:
             dist, idx = kd_tree.query(ap.position())
             if dist < self.influence_radius:
@@ -76,33 +72,30 @@ class Tree:
                     continue
                 growth_vectors[idx].append(direction / norm)
 
-        # snapshot BEFORE adding new nodes
+        # Snapshot BEFORE adding new nodes
         nodes_snapshot = self.nodes.copy()
-
         new_nodes = []
 
-        # 2. average direction -> new node
+        # 2. Average direction -> new node
         for node_idx, directions in growth_vectors.items():
             if not directions:
                 continue
-
             avg_dir = np.mean(directions, axis=0)
             norm = np.linalg.norm(avg_dir)
             if norm == 0:
                 continue
-
             avg_dir /= norm
             parent_node = self.nodes[node_idx]
             new_pos = parent_node.position() + avg_dir * self.step_size
             new_nodes.append((new_pos, node_idx))
 
-        # 3. collision-safe adding
+        # 3. Collision-safe adding
         for pos, parent_idx in new_nodes:
             if all(np.linalg.norm(pos - n.position()) > self.step_size * 0.9
                    for n in self.nodes):
                 self.add_node(tuple(pos), parent_idx)
 
-        # 4. kill attraction points
+        # 4. Kill attraction points
         remaining = []
         for ap in self.attraction_points:
             kill = False
@@ -113,5 +106,4 @@ class Tree:
                     break
             if not kill:
                 remaining.append(ap)
-
         self.attraction_points = remaining

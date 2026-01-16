@@ -30,7 +30,7 @@ class TreeScene(scene.SceneCanvas):
         )
 
         # --- start kamery ---
-        self.camera.center = (-10, -10, 3)
+        self.camera.center = (-10, -10, 10)
 
         # --- timer do wzrostu drzewa ---
         self.timer = app.Timer(interval=0.016, connect=self._timer_event, start=True)

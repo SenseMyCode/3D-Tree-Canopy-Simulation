@@ -6,7 +6,6 @@ class Terrain:
         self.height_amp = height_amp
 
     # ---- Terrain Generation ----
-
     def height(self, x: float, y: float) -> float:
         return (
             np.sin(x / self.scale) * np.cos(y / self.scale)
@@ -18,15 +17,21 @@ class Terrain:
         dzdy = (self.height(x, y + eps) - self.height(x, y - eps)) / (2 * eps)
         return np.sqrt(dzdx**2 + dzdy**2)
     
-    # ---- Moist ----
-
-    def moisture(self, x: float, y: float) -> float:
+    # ---- Spawn probability dla attraction points ----
+    def spawn_probability(self, x: float, y: float) -> float:
         h = self.height(x, y)
         s = self.slope(x, y)
 
-        moisture = (
-            np.exp(-0.5 * h**2)   # doliny wilgotniejsze
-            * np.exp(-s)          # stoki suchsze
-        )
+        # Dolina = h < -0.5 → wysokie prawdopodobieństwo
+        # Stok = -0.5 <= h <= 0.5 → średnie prawdopodobieństwo
+        # Szczyt = h > 0.5 → niskie prawdopodobieństwo
+        if h < -0.5:
+            base_prob = 0.95
+        elif h <= 0.5:
+            base_prob = 0.5
+        else:
+            base_prob = 0.1
 
-        return np.clip(moisture, 0.05, 1.0)
+        # Stromość zmniejsza spawn na stokach
+        prob = base_prob * np.exp(-2.0 * s)
+        return np.clip(prob, 0.05, 1.0)
