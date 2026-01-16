@@ -25,6 +25,9 @@ class Tree:
         root = Node(*root_position, parent=None)
         self.nodes.append(root)
 
+        self.max_attraction_points = 80
+        self.consumed_attraction_points = 0
+
     def add_node(self, position, parent_index):
         node = Node(*position, parent=parent_index)
         self.nodes.append(node)
@@ -48,6 +51,9 @@ class Tree:
     # ---------------- MAIN GROW ----------------
 
     def grow(self):
+        if self.consumed_attraction_points >= self.max_attraction_points:
+            return
+
         if not self.attraction_points:
             return
 
@@ -103,6 +109,7 @@ class Tree:
             for node in nodes_snapshot:
                 if np.linalg.norm(ap.position() - node.position()) < self.kill_radius:
                     kill = True
+                    self.consumed_attraction_points += 1
                     break
             if not kill:
                 remaining.append(ap)

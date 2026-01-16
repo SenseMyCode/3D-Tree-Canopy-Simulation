@@ -36,3 +36,30 @@ def generate_attraction_points(
                 )
             )
     return points
+
+def generate_attraction_points_from_terrain(
+        terrain,
+        n_candidates=5000,
+        area_size=20.0,
+        z_min=0.5,
+        z_max=6.0,
+):
+    points = []
+
+    for _ in range(n_candidates):
+        x = np.random.uniform(-area_size, area_size) #//2?
+        y = np.random.uniform(-area_size, area_size)
+
+        moisture = terrain.moisture(x, y)
+
+        #prawdopodobieństwo spawnu
+        if np.random.rand() > moisture:
+            continue
+
+        ground_z = terrain.height(x, y)
+
+        z = ground_z + np.random.uniform(z_min, z_max * moisture)
+
+        points.append(AttractionPoint(x, y, z))
+
+    return points
