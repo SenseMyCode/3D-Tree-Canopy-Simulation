@@ -20,6 +20,7 @@ def main():
     tree = Tree(
         root_position=(0, 0, root_z),
         attraction_points=attraction_points,
+        terrain=terrain,
         influence_radius=3.0,
         kill_radius=1.0,
         step_size=0.5
