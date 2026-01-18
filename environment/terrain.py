@@ -26,7 +26,7 @@ class Terrain:
         # Stok = -0.5 <= h <= 0.5 → średnie prawdopodobieństwo
         # Szczyt = h > 0.5 → niskie prawdopodobieństwo
         if h < -0.5:
-            base_prob = 0.95
+            base_prob = 0.75
         elif h <= 0.5:
             base_prob = 0.5
         else:

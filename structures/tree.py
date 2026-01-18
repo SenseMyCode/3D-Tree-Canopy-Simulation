@@ -2,6 +2,9 @@ from structures.node import Node
 from scipy.spatial import KDTree
 import numpy as np
 
+#ograniczyć rośnięcie drzewa względem nawilżenia ale poprzez obszar nie ilośc nodów
+#consumed attraction points też musi być zależny od moisture. Może do usunięcia
+
 
 class Tree:
     def __init__(
@@ -20,14 +23,16 @@ class Tree:
         self.kill_radius = kill_radius
         self.step_size = step_size
 
+        self.grow_radius = 5.0 #zależny od moisture
+
         self.trunk_height = 4.0
-        self.trunk_done = False
 
         root = Node(*root_position, parent=None)
         self.nodes.append(root)
 
         self.max_attraction_points = 80
         self.consumed_attraction_points = 0
+        self.trunk_end: Node = None
 
     def add_node(self, position, parent_index):
         node = Node(*position, parent=parent_index)
@@ -46,7 +51,8 @@ class Tree:
         # Sprawdzenie czy pień osiągnął docelową wysokość
         if new_pos[2] >= self.nodes[0].z + self.trunk_height:
             self.trunk_done = True
-
+            last_idx = len(self.nodes) - 1
+            trunk_end = self.nodes[last_idx] #ostatni node z trunk, żeby z niego liczyć radius
 
     # ---------------- MAIN GROW ----------------
     def grow(self):
@@ -64,13 +70,14 @@ class Tree:
 
         # 1. Attraction point -> nearest node
         for ap in self.attraction_points:
-            dist, idx = kd_tree.query(ap.position())
-            if dist < self.influence_radius:
-                direction = ap.position() - self.nodes[idx].position()
-                norm = np.linalg.norm(direction)
-                if norm == 0:
-                    continue
-                growth_vectors[idx].append(direction / norm)
+            if ap <= kula o promieniu 5 dookoła trunk_end
+                dist, idx = kd_tree.query(ap.position())
+                if dist < self.influence_radius:
+                    direction = ap.position() - self.nodes[idx].position()
+                    norm = np.linalg.norm(direction)
+                    if norm == 0:
+                        continue
+                    growth_vectors[idx].append(direction / norm)
 
         # Snapshot BEFORE adding new nodes
         nodes_snapshot = self.nodes.copy()

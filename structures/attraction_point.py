@@ -17,7 +17,7 @@ def generate_attraction_points_from_terrain(
         area_size=20.0,
         trunk_height=2.0,  # wysokość pnia
         z_min=0.5,
-        z_max=6.0,
+        z_max=10.0,
 ):
     points = []
 
