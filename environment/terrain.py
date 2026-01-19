@@ -28,11 +28,11 @@ class Terrain:
         # Stok = -0.5 <= h <= 0.5 → średnie prawdopodobieństwo
         # Szczyt = h > 0.5 → niskie prawdopodobieństwo
         if h < -0.5:
-            base_prob = 0.85
+            base_prob = 0.95
         elif h <= 0.5:
             base_prob = 0.2
         else:
-            base_prob = 0.5
+            base_prob = 0.4
 
         # Stromość zmniejsza spawn na stokach - czy ten fragment jest potrzebny?
         prob = base_prob * np.exp(-2.0 * s)
