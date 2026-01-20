@@ -1,14 +1,17 @@
 from dataclasses import dataclass
 import numpy as np
 
+
 @dataclass
 class AttractionPoint:
     x: float
     y: float
     z: float
+    claimed_by: int | None = None
 
     def position(self) -> np.ndarray:
         return np.array([self.x, self.y, self.z])
+
 
 
 def generate_attraction_points_from_terrain(

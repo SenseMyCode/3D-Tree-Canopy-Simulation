@@ -2,17 +2,19 @@ from structures.node import Node
 from scipy.spatial import KDTree
 import numpy as np
 
-
 class Tree:
     def __init__(
         self,
         root_position: tuple[float, float, float],
         attraction_points: list,
         terrain,
+        tree_id: int,
         influence_radius: float = 2.0,
         kill_radius: float = 1.0,
         step_size: float = 0.5,
     ):
+        self.tree_id = tree_id
+
         self.nodes: list[Node] = []
         self.edges: list[tuple[int, int]] = []
         self.attraction_points = attraction_points
@@ -27,11 +29,9 @@ class Tree:
 
         self.terrain = terrain
 
-        # --- ROOT ---
         root = Node(*root_position, parent=None)
         self.nodes.append(root)
 
-        # --- LIMIT WZROSTU ZALEŻNY OD MOISTURE ---
         root_x, root_y, _ = root_position
         root_moisture = self.terrain.moisture(root_x, root_y)
 
@@ -62,57 +62,49 @@ class Tree:
     # ---------------- MAIN GROW ----------------
 
     def grow(self):
-        # 1. limit energii
         if self.consumed_attraction_points >= self.max_attraction_points:
             return
 
-        # 2. brak attraction points
         if not self.attraction_points:
             return
 
-        # 3. najpierw pień
         if not self.trunk_done:
             self.grow_trunk()
             return
 
-        # -------------------------------------------------
-        # SETUP ITERACJI – growth radius
         trunk_pos = self.trunk_end.position()
         growth_radius = self.growth_radius()
 
-        # KDTree nodów
         node_positions = np.array([n.position() for n in self.nodes])
         node_tree = KDTree(node_positions)
 
-        # KDTree attraction points
-        ap_positions = np.array([ap.position() for ap in self.attraction_points])
+        free_aps = [
+            ap for ap in self.attraction_points
+            if ap.claimed_by is None or ap.claimed_by == self.tree_id
+        ]
+
+        if not free_aps:
+            return
+
+        ap_positions = np.array([ap.position() for ap in free_aps])
         ap_tree = KDTree(ap_positions)
 
-        # tylko attraction points w growth radius
         ap_indices = ap_tree.query_ball_point(trunk_pos, growth_radius)
-
-        # jeśli w zasięgu nic nie ma → brak wzrostu
         if not ap_indices:
             return
 
-        # -------------------------------------------------
-        # 4. attraction point -> nearest node
         growth_vectors = {i: [] for i in range(len(self.nodes))}
 
         for i in ap_indices:
-            ap = self.attraction_points[i]
+            ap = free_aps[i]   
 
             dist, node_idx = node_tree.query(ap.position())
-
             if dist < self.influence_radius:
                 direction = ap.position() - self.nodes[node_idx].position()
                 norm = np.linalg.norm(direction)
-                if norm == 0:
-                    continue
-                growth_vectors[node_idx].append(direction / norm)
+                if norm > 0:
+                    growth_vectors[node_idx].append(direction / norm)
 
-        # -------------------------------------------------
-        # 5. średni kierunek wzrostu
         new_nodes = []
         for node_idx, directions in growth_vectors.items():
             if not directions:
@@ -128,12 +120,6 @@ class Tree:
             new_pos = parent_node.position() + avg_dir * self.step_size
             new_nodes.append((new_pos, node_idx))
 
-        # brak wzrostu → nie marnuj klatek
-        if not new_nodes:
-            return
-
-        # -------------------------------------------------
-        # 6. dodawanie nodów (bez kolizji)
         for pos, parent_idx in new_nodes:
             if all(
                 np.linalg.norm(pos - n.position()) > self.step_size * 0.9
@@ -141,20 +127,15 @@ class Tree:
             ):
                 self.add_node(tuple(pos), parent_idx)
 
-        # -------------------------------------------------
-        # 7. usuwanie attraction points (kill radius)
-        remaining = []
         for ap in self.attraction_points:
-            killed = False
+            if ap.claimed_by is not None:
+                continue
+
             for node in self.nodes:
                 if np.linalg.norm(ap.position() - node.position()) < self.kill_radius:
+                    ap.claimed_by = self.tree_id
                     self.consumed_attraction_points += 1
-                    killed = True
                     break
-            if not killed:
-                remaining.append(ap)
-
-        self.attraction_points = remaining
 
     # ---------------- RADIUS ----------------
 
