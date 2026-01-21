@@ -33,7 +33,10 @@ def generate_attraction_points_from_terrain(
             continue
 
         ground_z = terrain.height(x, y)
-        z = ground_z + trunk_height + np.random.uniform(z_min, z_max * prob)
+
+        height_factor = 0.3 + 0.7 * prob
+
+        z = ground_z + trunk_height + np.random.uniform(z_min, z_max * height_factor)
 
         points.append(AttractionPoint(x, y, z))
 
