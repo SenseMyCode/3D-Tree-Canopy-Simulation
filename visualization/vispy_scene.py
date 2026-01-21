@@ -149,7 +149,7 @@ class TreeScene(scene.SceneCanvas):
                 meshdata = create_sphere(radius=radius, rows=16, cols=16)
                 sphere = Mesh(
                     meshdata=meshdata,
-                    color=(0.2, 0.4, 1.0, 0.15),
+                    color=(0.2, 0.4, 1.0, 0.1 + 0.5 * self.terrain.moisture(*center[:2])),
                     parent=self.view.scene
                 )
                 sphere.transform = scene.transforms.STTransform(

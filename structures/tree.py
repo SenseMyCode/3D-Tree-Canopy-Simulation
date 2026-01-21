@@ -35,8 +35,12 @@ class Tree:
         root_x, root_y, _ = root_position
         root_moisture = self.terrain.moisture(root_x, root_y)
 
-        self.max_attraction_points = int(30 + 150 * root_moisture)
+        self.max_attraction_points = int(30 + 200 * root_moisture)
         self.consumed_attraction_points = 0
+
+        self.beta = 0.05   # nachylenie terenu
+        self.gamma = 0.03 # wilgotność
+
 
     # -------------------------------------------------
 
@@ -141,5 +145,12 @@ class Tree:
 
     def growth_radius(self) -> float:
         x, y, _ = self.trunk_end.position()
-        m = self.terrain.moisture(x, y)
-        return 2.0 + 4.0 * m
+        m = self.terrain.moisture(x, y)  # 0.05..1.0
+
+        min_radius = 2.0
+        max_radius = 8.0  # większa różnica
+        alpha = 1.0         # pełny wpływ wilgotności
+
+        return min_radius + (max_radius - min_radius) * (m*0.8) * alpha
+
+
