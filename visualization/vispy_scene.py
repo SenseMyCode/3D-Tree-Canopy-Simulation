@@ -4,6 +4,7 @@ from vispy.scene import visuals
 from visualization.terrain_visual import TerrainVisual
 from vispy.scene.visuals import Mesh
 from vispy.geometry import create_sphere
+from matplotlib import cm
 
 
 class TreeScene(scene.SceneCanvas):
@@ -111,10 +112,19 @@ class TreeScene(scene.SceneCanvas):
                 all_edges.append(tree.nodes[i].position())
                 all_edges.append(tree.nodes[j].position())
 
+        # ---- NODE COLORMAP (HEIGHT) ----
         if all_nodes:
+            nodes = np.array(all_nodes)
+
+            zs = nodes[:, 2]
+            zmin, zmax = zs.min(), zs.max()
+            znorm = (zs - zmin) / (zmax - zmin + 1e-6)
+
+            colors = cm.viridis(znorm)  # RGBA [0,1]
+
             self.node_visual.set_data(
-                np.array(all_nodes),
-                face_color=(0.2, 1.0, 0.2, 1.0),
+                nodes,
+                face_color=colors,
                 size=8
             )
         else:
@@ -149,7 +159,12 @@ class TreeScene(scene.SceneCanvas):
                 meshdata = create_sphere(radius=radius, rows=16, cols=16)
                 sphere = Mesh(
                     meshdata=meshdata,
-                    color=(0.2, 0.4, 1.0, 0.1 + 0.5 * self.terrain.moisture(*center[:2])),
+                    color=(
+                        0.2,
+                        0.4,
+                        1.0,
+                        0.1 + 0.5 * self.terrain.moisture(*center[:2])
+                    ),
                     parent=self.view.scene
                 )
                 sphere.transform = scene.transforms.STTransform(

@@ -153,4 +153,8 @@ class Tree:
 
         return min_radius + (max_radius - min_radius) * (m*0.8) * alpha
 
+    # ---------------- HEIGHT ----------------
+
+    def height(self) -> float:
+        return max(n.z for n in self.nodes)
 

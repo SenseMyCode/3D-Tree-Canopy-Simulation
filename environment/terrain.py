@@ -45,12 +45,12 @@ class Terrain:
 
         # normalizacja wysokości (heurystyczna)
         h_norm = np.clip((h + self.height_amp) / (2 * self.height_amp), 0.0, 1.0)
-        h_dry = h_norm                  # im wyżej, tym bardziej sucho
+        h_dry = h_norm ** 1.7                  # im wyżej, tym bardziej sucho
 
         # nachylenie bardzo wysusza
-        s_dry = np.clip(s / 1.5, 0.0, 1.0)
+        s_dry = np.clip(s / 1.2, 0.0, 1.0)
 
         # końcowa wilgotność
-        moisture = 1.0 - (0.6 * h_dry + 0.4 * s_dry)
+        moisture = 1.0 - (0.5 * h_dry + 0.7 * s_dry)
 
         return np.clip(moisture, 0.05, 1.0)

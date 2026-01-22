@@ -4,6 +4,13 @@ from visualization.vispy_scene import TreeScene
 from vispy import app
 from environment.terrain import Terrain
 from structures.forest import Forest
+from analysis.plots_2d import (
+    plot_dem,
+    plot_seed_points,
+    plot_canopy_footprints
+)
+import matplotlib.pyplot as plt
+
 
 def main():
     terrain = Terrain(scale=8.0, height_amp=2.0)
@@ -16,7 +23,7 @@ def main():
     )
 
     trees = []
-    positions = [(-3, 0), (0, 0), (3, 1)]
+    positions = [(-3, 0), (0, 0), (3, 1), (7,1)]
 
     for i, (x, y) in enumerate(positions):
         root_z = terrain.height(x, y)
@@ -35,6 +42,12 @@ def main():
     TreeScene(forest, terrain)
 
     app.run()
+
+    plot_dem(terrain)
+    plot_seed_points(attraction_points)
+    plot_canopy_footprints(forest)
+    plt.show()
+
 
 if __name__ == "__main__":
     main()

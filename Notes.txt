@@ -1,2 +1,3 @@
 venv\Scripts\activate
 
+WYŁUMACZ SOBIE CAŁY FOLDER ANALYSIS
