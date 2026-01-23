@@ -1,0 +1,39 @@
+TREE CROWN METRICS
+===================
+
+Tree ID: 0
+-------------------
+height: 7.6782
+crown_volume: 94.9112
+asymmetry_radius: 16.3763
+asymmetry_pca: 3.2879
+asymmetry_hemispheres: 0.0259
+asymmetry_inertia: 3.0177
+
+Tree ID: 1
+-------------------
+height: 7.7445
+crown_volume: 48.8566
+asymmetry_radius: 27.4377
+asymmetry_pca: 2.6277
+asymmetry_hemispheres: 0.1910
+asymmetry_inertia: 2.2812
+
+Tree ID: 2
+-------------------
+height: 8.5545
+crown_volume: 21.1287
+asymmetry_radius: 11.0322
+asymmetry_pca: 2.7219
+asymmetry_hemispheres: 0.0667
+asymmetry_inertia: 2.5465
+
+Tree ID: 3
+-------------------
+height: 10.1228
+crown_volume: 58.3468
+asymmetry_radius: 15.8947
+asymmetry_pca: 1.1649
+asymmetry_hemispheres: 0.0076
+asymmetry_inertia: 1.0574
+

@@ -1,3 +1,69 @@
 venv\Scripts\activate
 
 WYŁUMACZ SOBIE CAŁY FOLDER ANALYSIS
+
+1️⃣ height: 7.6782
+
+Co to: Najwyższy punkt drzewa nad ziemią.
+
+Co robi: Mówi ci, jak duże jest drzewo w pionie.
+
+Jak patrzeć: 7.67 = drzewo prawie 8 metrów wysokie. Wyżej = większe, niżej = małe.
+
+2️⃣ crown_volume: 94.9112
+
+Co to: Objętość „bańki”, która obejmuje wszystkie gałęzie korony (3D).
+
+Co robi: Pokazuje, ile miejsca w powietrzu zajmuje drzewo.
+
+Jak patrzeć: Duża liczba = duża, rozłożysta korona. Mała liczba = mała, wąska korona.
+
+3️⃣ asymmetry_radius: 16.3763
+
+Co to: Stosunek najdalszego punktu korony od środka do najbliższego punktu.
+
+Co robi: Mówi, czy korona jest równomierna, czy punktowo „wychodzi” w jedną stronę.
+
+Jak patrzeć: 1 → idealnie okrągła, 16 → bardzo dziwnie wychylona w jednym punkcie.
+
+Uwaga: Bardzo wrażliwe na pojedyncze gałęzie → może „wybuchać” w wartościach, trzeba uważać.
+
+4️⃣ asymmetry_pca: 3.2879
+
+Co to: Statystyczna asymetria korony (główny kierunek rozciągnięcia).
+
+Co robi: Mówi, jak bardzo korona jest wydłużona w jedną stronę.
+
+Jak patrzeć:
+
+1 → okrągła
+
+2–3 → lekko wydłużona
+
+3.28 → mocno jednostronna, drzewo rośnie w jedną stronę
+
+5️⃣ asymmetry_hemispheres: 0.0259
+
+Co to: Porównanie „lewa połowa korony vs prawa połowa” w poziomie.
+
+Co robi: Mówi, czy korona jest przesunięta bardziej w jedną stronę.
+
+Jak patrzeć:
+
+0 → idealnie symetryczna
+
+0.025 → prawie symetryczna, minimalnie przesunięta w jedną stronę
+
+6️⃣ asymmetry_inertia: 3.0177
+
+Co to: Fizyczna wersja PCA – jak „masę” gałęzi można rozłożyć względem środka.
+
+Co robi: Mówi, jak bardzo nierównomiernie rozłożona jest masa korony.
+
+Jak patrzeć:
+
+1 → symetryczna
+
+3 → mocno rozciągnięta w jednym kierunku
+
+3.0177 → podobnie jak asymmetry_pca, tylko z fizycznej perspektywy
