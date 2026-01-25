@@ -3,37 +3,37 @@ TREE CROWN METRICS
 
 Tree ID: 0
 -------------------
-height: 8.9721
-crown_volume: 88.4638
-asymmetry_radius: 20.6498
-asymmetry_pca: 2.8439
-asymmetry_hemispheres: 0.0147
-asymmetry_inertia: 2.8060
+height: 7.8098
+crown_volume: 41.4438
+asymmetry_radius: 11.8924
+asymmetry_pca: 2.4893
+asymmetry_hemispheres: 0.1688
+asymmetry_inertia: 2.3958
 
 Tree ID: 1
 -------------------
-height: 7.9687
-crown_volume: 49.4461
-asymmetry_radius: 20.7077
-asymmetry_pca: 3.4603
-asymmetry_hemispheres: 0.1556
-asymmetry_inertia: 2.7999
+height: 7.4262
+crown_volume: 24.3790
+asymmetry_radius: 36.1864
+asymmetry_pca: 1.0899
+asymmetry_hemispheres: 0.1698
+asymmetry_inertia: 1.0359
 
 Tree ID: 2
 -------------------
-height: 7.1758
-crown_volume: 18.5519
-asymmetry_radius: 14.9650
-asymmetry_pca: 4.7460
-asymmetry_hemispheres: 0.0690
-asymmetry_inertia: 4.5283
+height: 7.6294
+crown_volume: 26.0132
+asymmetry_radius: 18.2926
+asymmetry_pca: 2.0353
+asymmetry_hemispheres: 0.0345
+asymmetry_inertia: 1.9536
 
 Tree ID: 3
 -------------------
-height: 7.9168
-crown_volume: 60.1139
-asymmetry_radius: 45.6276
-asymmetry_pca: 1.4548
-asymmetry_hemispheres: 0.0236
-asymmetry_inertia: 1.4539
+height: 7.4696
+crown_volume: 34.8288
+asymmetry_radius: 25.7682
+asymmetry_pca: 1.3201
+asymmetry_hemispheres: 0.0455
+asymmetry_inertia: 1.2309
 

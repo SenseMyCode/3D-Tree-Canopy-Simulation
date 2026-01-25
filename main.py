@@ -14,6 +14,36 @@ import matplotlib.pyplot as plt
 from analysis.environment_stats import run_environment_stats
 
 
+def main_intro():
+    terrain = Terrain(scale=8.0, height_amp=2.0)
+
+    attraction_points = generate_attraction_points_from_terrain(
+        terrain=terrain,
+        n_candidates=4000,
+        area_size=10.0,
+        trunk_height=4.0
+    )
+
+    x, y = 0.0, 0.0
+    root_z = terrain.height(x, y)
+
+    tree = Tree(
+        root_position=(x, y, root_z),
+        attraction_points=attraction_points,
+        terrain=terrain,
+        tree_id=0,
+        influence_radius=3.0,
+        kill_radius=1.0,
+        step_size=0.5
+    )
+
+    forest = Forest([tree], attraction_points)
+
+    print("Intro: wzrost jednego drzewa")
+    TreeScene(forest, terrain)
+    app.run()   # ← po zamknięciu okna idziemy dalej
+
+
 def main():
     # ---------------- TERRAIN ----------------
     terrain = Terrain(scale=8.0, height_amp=2.0)
@@ -82,4 +112,5 @@ def main():
 
 
 if __name__ == "__main__":
+    main_intro()
     main()
