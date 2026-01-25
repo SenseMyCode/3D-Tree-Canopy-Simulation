@@ -11,6 +11,7 @@ from analysis.plots_2d import (
 )
 from analysis.crown_metrics import crown_metrics
 import matplotlib.pyplot as plt
+from analysis.environment_stats import run_environment_stats
 
 
 def main():
@@ -55,6 +56,9 @@ def main():
     plot_seed_points(attraction_points)
     plot_canopy_footprints(forest)
     plt.show()
+
+    # ---------------- ENVIRONMENTAL STATISTICS ----------------
+    run_environment_stats(forest, terrain)
 
     # ---------------- METRICS OUTPUT ----------------
     output_path = "crown_metrics.txt"

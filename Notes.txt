@@ -1,6 +1,5 @@
 venv\Scripts\activate
 
-WYŁUMACZ SOBIE CAŁY FOLDER ANALYSIS
 
 1️⃣ height: 7.6782
 
@@ -67,3 +66,20 @@ Jak patrzeć:
 3 → mocno rozciągnięta w jednym kierunku
 
 3.0177 → podobnie jak asymmetry_pca, tylko z fizycznej perspektywy
+
+
+
+
+
+Możesz powiedzieć WSZYSTKIE te zdania bez wstydu:
+
+✅ Wilgotność ma wyraźny wpływ na rozmiar korony
+✅ Nachylenie terenu nie odgrywa istotnej roli w tym modelu
+✅ Konkurencja przestrzenna była zbyt słaba, by wpłynąć na wysokość
+✅ Asymetria korony wydaje się bardziej związana z warunkami wzrostu niż z sąsiedztwem
+✅ Wyniki mają charakter eksploracyjny ze względu na małą próbę
+
+
+
+Czy nie ma 2 razy zdefiniowanego crown radius?
+w environament_stats.py dlaczego takie a nie inne funkcje
