@@ -8,6 +8,15 @@ from scipy.stats import pearsonr, spearmanr
 from analysis.canopy import canopy_hull
 from analysis.crown_metrics import crown_metrics
 
+from analysis.day13_plots import(
+    plot_radius_vs_moisture,
+    plot_radius_vs_neighbors,
+    boxplot_wet_vs_dry,
+    boxplot_valley_vs_ridge,
+    map_crown_radius,
+    map_moisture
+)
+
 
 def crown_radius(tree):
     hull = canopy_hull(tree)
@@ -107,5 +116,14 @@ def run_environment_stats(forest, terrain):
     analyze_radius_vs_moisture(df)
     analyze_height_vs_neighbors(df)
     analyze_light_vs_asymmetry(df)
+
+    plt.show()
+
+    plot_radius_vs_neighbors(df)
+
+    boxplot_valley_vs_ridge(df)
+
+    map_crown_radius(df)
+    map_moisture(df)
 
     plt.show()
