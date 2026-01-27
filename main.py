@@ -41,14 +41,12 @@ def main_intro():
 
     print("Intro: wzrost jednego drzewa")
     TreeScene(forest, terrain)
-    app.run()   # ← po zamknięciu okna idziemy dalej
+    app.run()  
 
 
 def main():
-    # ---------------- TERRAIN ----------------
     terrain = Terrain(scale=8.0, height_amp=2.0)
 
-    # ---------------- ATTRACTION POINTS ----------------
     attraction_points = generate_attraction_points_from_terrain(
         terrain=terrain,
         n_candidates=8000,
@@ -56,9 +54,10 @@ def main():
         trunk_height=4.0
     )
 
-    # ---------------- TREES ----------------
     trees = []
-    positions = [(-3, 0), (0, 0), (3, 1), (7, 1)]
+    positions = [(-3, -3), (-3,-2), (-3,-1), (-3, 3),
+                 (2, -3), (2, -2), (2, -1), (2, 3),
+                 (5, -3), (5, -2), (5, -1), (5, 3)]
 
     for i, (x, y) in enumerate(positions):
         root_z = terrain.height(x, y)
@@ -77,20 +76,16 @@ def main():
 
     forest = Forest(trees, attraction_points)
 
-    # ---------------- VISUALIZATION ----------------
     TreeScene(forest, terrain)
-    app.run()  # <- symulacja wzrostu
+    app.run() 
 
-    # ---------------- 2D PLOTS ----------------
     plot_dem(terrain)
     plot_seed_points(attraction_points)
     plot_canopy_footprints(forest)
     plt.show()
 
-    # ---------------- ENVIRONMENTAL STATISTICS ----------------
     run_environment_stats(forest, terrain)
 
-    # ---------------- METRICS OUTPUT ----------------
     output_path = "crown_metrics.txt"
 
     with open(output_path, "w", encoding="utf-8") as f:
