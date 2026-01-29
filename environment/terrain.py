@@ -34,7 +34,7 @@ class Terrain:
         else:
             base_prob = 0.4
 
-        # Stromość zmniejsza spawn na stokach - czy ten fragment jest potrzebny?
+        # Stromość zmniejsza spawn na stokach 
         prob = base_prob * np.exp(-2.0 * s)
         return np.clip(prob, 0.05, 1.0)
 

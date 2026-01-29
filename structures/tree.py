@@ -180,9 +180,8 @@ class Tree:
 
         min_radius = 2.0
         max_radius = 8.0
-        alpha = 1.0
 
-        return min_radius + (max_radius - min_radius) * (m * 0.8) * alpha
+        return min_radius + (max_radius - min_radius) * (m * 0.8) 
 
     # ---------------- HEIGHT ----------------
 
