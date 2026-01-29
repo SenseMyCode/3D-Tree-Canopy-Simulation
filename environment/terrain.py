@@ -1,6 +1,5 @@
 import numpy as np
 
-#dwie funkcje od moisture?
 
 class Terrain:
     def __init__(self, scale=10.0, height_amp=2.5):
@@ -13,20 +12,18 @@ class Terrain:
             np.sin(x / self.scale) * np.cos(y / self.scale)
             + 0.5 * np.sin(2 * x / self.scale)
         ) * self.height_amp
-    
+
     def slope(self, x: float, y: float, eps=0.1) -> float:
         dzdx = (self.height(x + eps, y) - self.height(x - eps, y)) / (2 * eps)
         dzdy = (self.height(x, y + eps) - self.height(x, y - eps)) / (2 * eps)
         return np.sqrt(dzdx**2 + dzdy**2)
-    
-    # ---- Spawn probability dla attraction points ---- 
+
+    # ---- Spawn probability dla attraction points (już NIE używana bezpośrednio) ----
+    # Zostawiamy jako potencjalną funkcję pomocniczą, ale generacja AP jest sterowana słońcem.
     def spawn_probability(self, x: float, y: float) -> float:
         h = self.height(x, y)
         s = self.slope(x, y)
 
-        # Dolina = h < -0.5 → wysokie prawdopodobieństwo
-        # Stok = -0.5 <= h <= 0.5 → średnie prawdopodobieństwo
-        # Szczyt = h > 0.5 → niskie prawdopodobieństwo
         if h < -0.5:
             base_prob = 0.95
         elif h <= 0.5:
@@ -34,23 +31,34 @@ class Terrain:
         else:
             base_prob = 0.4
 
-        # Stromość zmniejsza spawn na stokach 
         prob = base_prob * np.exp(-2.0 * s)
         return np.clip(prob, 0.05, 1.0)
-
 
     def moisture(self, x: float, y: float) -> float:
         h = self.height(x, y)
         s = self.slope(x, y)
 
-        # normalizacja wysokości (heurystyczna)
         h_norm = np.clip((h + self.height_amp) / (2 * self.height_amp), 0.0, 1.0)
-        h_dry = h_norm ** 1.7                  # im wyżej, tym bardziej sucho
+        h_dry = h_norm ** 1.7
 
-        # nachylenie bardzo wysusza
         s_dry = np.clip(s / 1.2, 0.0, 1.0)
 
-        # końcowa wilgotność
         moisture = 1.0 - (0.5 * h_dry + 0.7 * s_dry)
 
         return np.clip(moisture, 0.05, 1.0)
+
+    # ---- SUNLIGHT (niezależne od moisture) ----
+    def sunlight(self, x: float, y: float, sun) -> float:
+        z = self.height(x, y)
+
+        eps = 0.1
+        dzdx = (self.height(x + eps, y) - self.height(x - eps, y)) / (2 * eps)
+        dzdy = (self.height(x, y + eps) - self.height(x, y - eps)) / (2 * eps)
+
+        normal = np.array([-dzdx, -dzdy, 1.0])
+        normal /= np.linalg.norm(normal) + 1e-6
+
+        light_dir = sun.direction_to(x, y, z)
+
+        # 0.05 .. 1.0 – zostawiamy lekki "minimum light"
+        return float(np.clip(np.dot(normal, light_dir), 0.05, 1.0))

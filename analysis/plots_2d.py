@@ -13,7 +13,8 @@ def plot_dem(terrain):
         Z,
         extent=[xs.min(), xs.max(), ys.min(), ys.max()],
         origin="lower",
-        cmap="terrain"
+        cmap="terrain",
+        aspect="auto"
     )
     plt.colorbar(label="Height")
     plt.title("DEM (synthetic)")
@@ -22,11 +23,17 @@ def plot_dem(terrain):
 
 
 def plot_seed_points(attraction_points):
+    # attraction_points: list of AttractionPoint (x,y,z,claimed_by)
     xs = [p.x for p in attraction_points]
     ys = [p.y for p in attraction_points]
+    claimed = [p.claimed_by is not None for p in attraction_points]
 
     plt.figure(figsize=(6, 6))
-    plt.scatter(xs, ys, s=2, alpha=0.3)
+    # unclaimed = yellow-ish, claimed = grey (transparent)
+    colors = ["#FFD54F" if not c else "#9E9E9E" for c in claimed]
+    alphas = [0.6 if not c else 0.2 for c in claimed]
+    plt.scatter(xs, ys, s=8, c=colors, alpha=0.8, linewidths=0)
+
     plt.title("Attraction / Seed Points (2D)")
     plt.xlabel("X")
     plt.ylabel("Y")
@@ -36,13 +43,17 @@ def plot_seed_points(attraction_points):
 def plot_canopy_footprints(forest):
     plt.figure(figsize=(6, 6))
 
-    for tree in forest.trees:
+    # kolorowanie według ID (jeśli jest)
+    n = max(1, len(forest.trees))
+    cmap = plt.get_cmap("tab20")
+
+    for i, tree in enumerate(forest.trees):
         hull = canopy_hull(tree)
         if hull is None:
             continue
 
         poly = np.vstack([hull, hull[0]])
-        plt.plot(poly[:, 0], poly[:, 1], linewidth=2)
+        plt.plot(poly[:, 0], poly[:, 1], linewidth=1.5, color=cmap(i % 20))
 
     plt.title("Tree Canopy Footprints (Convex Hull)")
     plt.xlabel("X")
