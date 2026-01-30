@@ -32,29 +32,25 @@ def generate_attraction_points_from_terrain(
     points: list[AttractionPoint] = []
 
     # ===== PARAMETRY KLUCZOWE =====
-    target_points = int(0.25 * n_candidates)   # więcej punktów niż wcześniej
-    min_prob = 0.05                            # minimalna szansa w cieniu
-    max_prob = 0.95                            # maksymalna szansa w pełnym słońcu
-    sunlight_gamma = 2.2                       # mocny kontrast jasne/cieniste
+    target_points = int(0.25 * n_candidates)   
+    min_prob = 0.05                            
+    max_prob = 0.95                            
+    sunlight_gamma = 2.2                       
 
-    # siatka = gwarancja pokrycia całej przestrzeni
     grid_res = int(np.sqrt(n_candidates))
     xs = np.linspace(-area_size, area_size, grid_res)
     ys = np.linspace(-area_size, area_size, grid_res)
 
     for x in xs:
         for y in ys:
-            # jitter przestrzenny
             xj = x + np.random.uniform(-0.4, 0.4)
             yj = y + np.random.uniform(-0.4, 0.4)
 
-            sun_val = terrain.sunlight(xj, yj, sun)  # 0.05 .. 1.0
+            sun_val = terrain.sunlight(xj, yj, sun)  
 
-            # normalizacja do [0,1]
             sun_norm = (sun_val - 0.05) / (1.0 - 0.05)
             sun_norm = np.clip(sun_norm, 0.0, 1.0)
 
-            # nieliniowość – jasne miejsca dostają DUŻO większą wagę
             sun_weight = sun_norm ** sunlight_gamma
 
             prob = min_prob + (max_prob - min_prob) * sun_weight
@@ -72,7 +68,6 @@ def generate_attraction_points_from_terrain(
 
             points.append(AttractionPoint(xj, yj, z))
 
-    # Po przejściu całej siatki możemy mieć za dużo punktów → losowo przycinamy
     if len(points) > target_points:
         idx = np.random.choice(len(points), size=target_points, replace=False)
         points = [points[i] for i in idx]

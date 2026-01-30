@@ -43,7 +43,7 @@ def crown_volume(tree, min_height_ratio=0.6):
     pts = canopy_points_3d(tree, min_height_ratio)
 
     if len(pts) < 4:
-        return 0.0  # za mało punktów na bryłę 3D
+        return 0.0  
 
     hull = ConvexHull(pts)
     return hull.volume
@@ -78,13 +78,10 @@ def asymmetry_pca(tree, min_height_ratio=0.6):
     if len(pts) < 3:
         return 0.0
 
-    # centrowanie
     pts_centered = pts - pts.mean(axis=0)
 
-    # macierz kowariancji
     cov = np.cov(pts_centered.T)
 
-    # wartości własne
     eigvals, _ = np.linalg.eig(cov)
     eigvals = np.sort(eigvals)[::-1]
 

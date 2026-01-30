@@ -23,13 +23,11 @@ def plot_dem(terrain):
 
 
 def plot_seed_points(attraction_points):
-    # attraction_points: list of AttractionPoint (x,y,z,claimed_by)
     xs = [p.x for p in attraction_points]
     ys = [p.y for p in attraction_points]
     claimed = [p.claimed_by is not None for p in attraction_points]
 
     plt.figure(figsize=(6, 6))
-    # unclaimed = yellow-ish, claimed = grey (transparent)
     colors = ["#FFD54F" if not c else "#9E9E9E" for c in claimed]
     alphas = [0.6 if not c else 0.2 for c in claimed]
     plt.scatter(xs, ys, s=8, c=colors, alpha=0.8, linewidths=0)
@@ -43,7 +41,6 @@ def plot_seed_points(attraction_points):
 def plot_canopy_footprints(forest):
     plt.figure(figsize=(6, 6))
 
-    # kolorowanie według ID (jeśli jest)
     n = max(1, len(forest.trees))
     cmap = plt.get_cmap("tab20")
 

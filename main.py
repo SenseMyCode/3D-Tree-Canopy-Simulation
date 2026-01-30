@@ -10,14 +10,6 @@ from structures.attraction_point import generate_attraction_points_from_terrain
 
 from visualization.vispy_scene import TreeScene
 
-from analysis.plots_2d import (
-    plot_dem,
-    plot_seed_points,
-    plot_canopy_footprints
-)
-from analysis.crown_metrics import crown_metrics
-from analysis.environment_stats import run_environment_stats
-
 
 def main_intro():
     terrain = Terrain(scale=8.0, height_amp=2.0)
@@ -67,7 +59,7 @@ def main():
     positions = [
         (-3, -3), (-3, -2), (-3, -1), (-3, 3),
         (2, -3), (2, -2), (2, -1), (2, 3),
-        (5, -3), (5, -2), (5, -1), (5, 3)
+        (5, -3), (5, -2), (5, -1), (5, 3),
     ]
 
     for i, (x, y) in enumerate(positions):

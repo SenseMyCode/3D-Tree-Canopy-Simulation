@@ -18,9 +18,7 @@ class Terrain:
         dzdy = (self.height(x, y + eps) - self.height(x, y - eps)) / (2 * eps)
         return np.sqrt(dzdx**2 + dzdy**2)
 
-    # ---- Spawn probability dla attraction points (już NIE używana bezpośrednio) ----
-    # Zostawiamy jako potencjalną funkcję pomocniczą, ale generacja AP jest sterowana słońcem.
-    def spawn_probability(self, x: float, y: float) -> float:
+    """def spawn_probability(self, x: float, y: float) -> float:
         h = self.height(x, y)
         s = self.slope(x, y)
 
@@ -32,7 +30,7 @@ class Terrain:
             base_prob = 0.4
 
         prob = base_prob * np.exp(-2.0 * s)
-        return np.clip(prob, 0.05, 1.0)
+        return np.clip(prob, 0.05, 1.0)"""
 
     def moisture(self, x: float, y: float) -> float:
         h = self.height(x, y)
@@ -60,5 +58,4 @@ class Terrain:
 
         light_dir = sun.direction_to(x, y, z)
 
-        # 0.05 .. 1.0 – zostawiamy lekki "minimum light"
         return float(np.clip(np.dot(normal, light_dir), 0.05, 1.0))

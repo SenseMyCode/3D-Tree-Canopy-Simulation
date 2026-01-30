@@ -39,7 +39,6 @@ class Tree:
         root = Node(*root_position, parent=None)
         self.nodes.append(root)
 
-        # CACHE: pozycje node’ów + KDTree
         self._node_positions = np.array([root.position()], dtype=float)
         self._node_tree = KDTree(self._node_positions)
 
@@ -50,14 +49,13 @@ class Tree:
         self.max_attraction_points = int(30 + 200 * root_moisture)
         self.consumed_attraction_points = 0
 
-        self.beta = 0.05   # nachylenie terenu (na razie nieużywane)
-        self.gamma = 0.03  # wilgotność (na razie nieużywane)
+        #self.beta = 0.05   
+        #self.gamma = 0.03  
 
     # -------------------------------------------------
-    # POMOCNICZE
 
     def _rebuild_node_tree(self) -> None:
-        """Aktualizuje KDTree po dodaniu nowych node’ów."""
+        """Aktualizuje KDTree po dodaniu nowych nodeów."""
         self._node_positions = np.array(
             [n.position() for n in self.nodes],
             dtype=float
@@ -69,7 +67,6 @@ class Tree:
         self.nodes.append(node)
         self.edges.append((parent_index, len(self.nodes) - 1))
 
-        # po dodaniu node’a aktualizujemy KDTree
         self._rebuild_node_tree()
 
     # ---------------- TRUNK ----------------
@@ -104,7 +101,6 @@ class Tree:
         trunk_pos = self.trunk_end.position()
         growth_radius = self.growth_radius()
 
-        # używamy zcache’owanego KDTree node’ów
         node_tree = self._node_tree
 
         # bierzemy tylko AP, które są wolne lub przypisane do tego drzewa
@@ -176,7 +172,7 @@ class Tree:
 
     def growth_radius(self) -> float:
         x, y, _ = self.trunk_end.position()
-        m = self.terrain.moisture(x, y)  # 0.05..1.0
+        m = self.terrain.moisture(x, y)  
 
         min_radius = 2.0
         max_radius = 8.0

@@ -51,7 +51,7 @@ def add_neighbor_distances(df):
     xy = df[["x", "y"]].values
     tree = KDTree(xy)
 
-    distances, _ = tree.query(xy, k=2)  # [0] = self
+    distances, _ = tree.query(xy, k=2)  
     df["nearest_neighbor_dist"] = distances[:, 1]
 
     return df
