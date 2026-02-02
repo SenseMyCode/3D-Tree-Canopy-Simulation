@@ -157,16 +157,19 @@ class Tree:
             ):
                 self.add_node(tuple(pos), parent_idx)
 
-        # zabijamy AP w kill_radius
+        # --- szybki kill-radius (KDTree) ---
+        node_positions = np.array([n.position() for n in self.nodes])
+        node_tree = KDTree(node_positions)
+
         for ap in self.attraction_points:
             if ap.claimed_by is not None:
                 continue
 
-            for node in self.nodes:
-                if np.linalg.norm(ap.position() - node.position()) < self.kill_radius:
-                    ap.claimed_by = self.tree_id
-                    self.consumed_attraction_points += 1
-                    break
+            idxs = node_tree.query_ball_point(ap.position(), self.kill_radius)
+            if idxs:
+                ap.claimed_by = self.tree_id
+                self.consumed_attraction_points += 1
+
 
     # ---------------- RADIUS ----------------
 
