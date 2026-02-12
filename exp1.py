@@ -1,5 +1,3 @@
-# exp_visual_shadow_compensation.py
-#
 # Wizualizacja eksperymentu:
 # 2 drzewa na tej samej wysokości, ale z różną liczbą attraction points.
 # Po zamknięciu okna wypisuje crown_radius, height, crown_volume, moisture
@@ -51,7 +49,6 @@ def count_ap_in_growth_radius(tree, attraction_points):
 def generate_custom_ap(terrain):
     points = []
 
-    # DRZEWO SŁONECZNE — DUŻO AP
     center_sun = (0.0, -12.0)
     for _ in range(3500):
         x = np.random.normal(center_sun[0], 3.0)
@@ -60,7 +57,6 @@ def generate_custom_ap(terrain):
         z = ground_z + 4.0 + np.random.uniform(1.0, 10.0)
         points.append(AttractionPoint(x, y, z))
 
-    # DRZEWO CIENIOWE — MAŁO AP
     center_shadow = (0.0, 12.0)
     for _ in range(700):
         x = np.random.normal(center_shadow[0], 3.0)
@@ -142,10 +138,8 @@ def main():
 
     timer = app.Timer(interval=0.03, connect=update, start=True)
 
-    # uruchom wizualizację
     app.run()
 
-    # po zamknięciu okna:
     print("\n=== WYNIKI KOŃCOWE ===")
     df = build_tree_dataframe(forest, terrain, attraction_points)
     print(df)
