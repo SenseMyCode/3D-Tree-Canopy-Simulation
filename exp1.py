@@ -1,8 +1,3 @@
-# Wizualizacja eksperymentu:
-# 2 drzewa na tej samej wysokości, ale z różną liczbą attraction points.
-# Po zamknięciu okna wypisuje crown_radius, height, crown_volume, moisture
-# oraz liczbę attraction points w growth radius.
-
 import numpy as np
 from vispy import app
 

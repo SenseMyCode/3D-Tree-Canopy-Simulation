@@ -1,14 +1,3 @@
-"""
-Wizualizacja eksperymentu 2 — wpływ położenia słońca
-
-Uruchamia symulacje dla wybranych pozycji słońca (bez GUI),
-następnie wyświetla każde drzewo w osobnym oknie TreeScene.
-
-Uruchomienie:
-    python exp2_visualize.py
-"""
-
-import math
 import numpy as np
 import logging
 from vispy import app
@@ -30,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 def run_simulation_headless(sun_pos, seed, max_steps=3000):
-    """Uruchomienie symulacji bez GUI"""
     np.random.seed(seed)
 
     terrain = Terrain(scale=8.0, height_amp=2.0)
@@ -94,8 +82,6 @@ def run_simulation_headless(sun_pos, seed, max_steps=3000):
 
 
 def main():
-    # Wybrane pozycje słońca
-    # Format: (x, y, z) reprezentujący kierunki i wysokości
     sun_positions = [
         # Północ (y ujemne), różne wysokości
         (0.0, -30.0, 15.0),    # Północ, nisko

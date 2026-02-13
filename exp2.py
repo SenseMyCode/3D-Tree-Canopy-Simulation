@@ -1,13 +1,3 @@
-"""
-Eksperyment 2 — wpływ położenia słońca na morfologię drzewa
-
-Uruchomienie:
-    python exp2.py
-
-Skrypt wykonuje dla wielu pozycji słońca kilka powtórzeń symulacji (bez GUI),
-zbiera metryki i zapisuje `exp2_results.csv`.
-"""
-
 import math
 import numpy as np
 import pandas as pd
@@ -24,7 +14,6 @@ from analysis.crown_metrics import crown_volume, asymmetry_radius
 from analysis.canopy import canopy_hull
 
 
-# --- logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s",
@@ -86,7 +75,6 @@ def run_simulation(sun_pos, seed, max_steps=3000):
 
     forest = Forest([tree], attraction_points)
 
-    # Symulacja bez GUI
     steps = 0
     stagnant = 0
     last_node_count = len(tree.nodes)
@@ -95,7 +83,6 @@ def run_simulation(sun_pos, seed, max_steps=3000):
         forest.grow()
         steps += 1
 
-        # prosty warunek zatrzymania: brak przyrostu przez wiele kroków
         node_count = len(tree.nodes)
         if node_count == last_node_count:
             stagnant += 1
@@ -106,11 +93,9 @@ def run_simulation(sun_pos, seed, max_steps=3000):
         if stagnant > 500:
             break
 
-        # jeśli drzewo skonsumowało swój limit AP, koniec
         if tree.consumed_attraction_points >= tree.max_attraction_points:
             break
 
-        # jeśli żadnych dostępnych AP -> koniec
         free_aps = [ap for ap in attraction_points if ap.claimed_by is None]
         if not free_aps:
             logger.info(f"Run seed={seed}: no free AP left at step={steps}")
@@ -144,7 +129,6 @@ def run_simulation(sun_pos, seed, max_steps=3000):
 
 
 def main():
-    # konfiguracja eksperymentu
     azimuths = np.linspace(0, 2 * math.pi, 8, endpoint=False)  # 8 kierunków
     radii = [30.0]  # odległość słońca od środka
     heights = [10.0, 30.0, 60.0]  # różne wysokości słońca
@@ -180,7 +164,6 @@ def main():
     out_path = "exp2_results.csv"
     df.to_csv(out_path, index=False)
 
-    # Prosty raport agregowany po pozycji słońca
     agg = df.groupby(["sun_x", "sun_y", "sun_z"]).agg(
         mean_height=("height", "mean"),
         mean_crown_radius=("crown_radius", "mean"),
